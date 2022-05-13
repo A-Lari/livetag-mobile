@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, TextInput } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useState, useEffect } from "react";
 import services from "../services";
+import dayjs from "dayjs";
 
 export default function Event({ route }) {
   const code = route.params.data.code;
@@ -38,14 +39,32 @@ export default function Event({ route }) {
 
       <View style={styles.containerText}>
         <Text style={styles.containerTitle}>Bienvenue sur l'évènement</Text>
-        <Text>nom de l'event : {event.event_name}</Text>
-        <Text style={styles.containerComment}>numéro code</Text>
+        <Text>Nom : {event.event_name}</Text>
+        <Text style={styles.containerComment}>Code : {event.code}</Text>
+        <Text style={styles.containerComment}>{event.description}</Text>
+        <Text style={styles.containerComment}>
+          Début :{dayjs(event.start_date).format("DD.MM.YYYY")}
+        </Text>
+        <Text style={styles.containerComment}>
+          Fin :{dayjs(event.end_date).format("DD.MM.YYYY")}
+        </Text>
       </View>
 
       <View style={styles.containerText}>
         <Text style={styles.containerTitle}>Vous souhaitez?</Text>
-        <Text>Merci de sélectionner le scanner entrée ou activité</Text>
-        <Text style={styles.containerComment}>Voir menu en bas de l'écran</Text>
+        <Text>Merci de sélectionner quel scanner vous souhaitez utiliser</Text>
+      </View>
+
+      <View style={styles.containerAction}>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Scanner l'entrée</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.containerAction}>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Scanner l'activité</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -71,6 +90,8 @@ const styles = StyleSheet.create({
   },
 
   containerText: {
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 30,
     width: "70%",
   },
@@ -84,5 +105,25 @@ const styles = StyleSheet.create({
   containerComment: {
     fontStyle: "italic",
     marginTop: 5,
+  },
+
+  containerAction: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  button: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
+    borderRadius: 10,
+    backgroundColor: "black",
+    margin: 20,
+  },
+
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
   },
 });

@@ -8,6 +8,10 @@ const services = {
     console.log("==========>", code);
     return base.get(`/mobile/${code}`).then((res) => res.data);
   },
+
+  checkEntry() {
+    console.log("==========>checkentry", data);
+  },
 };
 
 export default services;

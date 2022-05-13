@@ -1,11 +1,45 @@
-import React from "react";
-import { StyleSheet, Text, View, Image, TextInput } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { View, Text, Button, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { BarCodeScanner } from "expo-barcode-scanner";
+import services from "../services";
 
-export default function Entry() {
+export default function Scanner() {
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
+
+  const handleBarCodeScanned = ({ type, data }) => {
+    const event = data;
+    setScanned(true);
+    services.checkEntry({ data });
+  };
+
+  if (hasPermission === null) {
+    return <Text>Requestion for camera persommission</Text>;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Entry</Text>
+      <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={StyleSheet.absoluteFillObject}
+      />
+      {scanned && (
+        <Button
+          title={"Tap to scan again"}
+          onPress={() => setScanned(false)}
+          style={styles.scanAgain}
+        />
+      )}
     </View>
   );
 }
@@ -13,8 +47,11 @@ export default function Entry() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+  },
+
+  scanAgain: {
+    flex: 1,
   },
 });
