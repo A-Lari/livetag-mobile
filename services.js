@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:3001";
+const baseURL = "https://livetag-backend.osc-fr1.scalingo.io/";
 const base = axios.create({ baseURL });
 
 const services = {

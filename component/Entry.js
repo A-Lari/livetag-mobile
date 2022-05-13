@@ -1,9 +1,9 @@
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState, useEffect } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import services from "../services";
 
-export default function Scanner() {
+export default function Entry() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
@@ -29,17 +29,22 @@ export default function Scanner() {
 
   return (
     <View style={styles.container}>
-      <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}
-      />
-      {scanned && (
-        <Button
-          title={"Tap to scan again"}
-          onPress={() => setScanned(false)}
-          style={styles.scanAgain}
+      <View style={styles.containerCam}>
+        <BarCodeScanner
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          style={StyleSheet.absoluteFillObject}
         />
-      )}
+      </View>
+      <View style={styles.container}>
+        {scanned && (
+          <TouchableOpacity
+            onPress={() => setScanned(false)}
+            style={styles.scanAgain}
+          >
+            <Text>Tap to scan again</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 }
@@ -47,11 +52,16 @@ export default function Scanner() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-end",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   scanAgain: {
     flex: 1,
+  },
+
+  containerCam: {
+    height: "80%",
+    width: "80%",
   },
 });

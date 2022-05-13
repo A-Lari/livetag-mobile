@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import services from "../services";
 import dayjs from "dayjs";
 
-export default function Event({ route }) {
+export default function Event({ route, navigation }) {
   const code = route.params.data.code;
 
   const [event, setEvent] = useState({});
@@ -57,13 +57,23 @@ export default function Event({ route }) {
 
       <View style={styles.containerAction}>
         <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Scanner l'entrée</Text>
+          <Text
+            style={styles.buttonText}
+            onPress={() => navigation.navigate("Entry")}
+          >
+            Scanner l'entrée
+          </Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.containerAction}>
         <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Scanner l'activité</Text>
+          <Text
+            style={styles.buttonText}
+            onPress={() => navigation.navigate("Activities")}
+          >
+            Scanner l'activité
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
