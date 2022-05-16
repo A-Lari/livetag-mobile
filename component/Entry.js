@@ -3,7 +3,13 @@ import React, { useState, useEffect } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import services from "../services";
 
-export default function Entry() {
+export default function Entry({ route, navigation }) {
+  const idEvent = route.params.data._id;
+
+  const [participant, setParticipant] = useState({
+    event: {},
+  });
+
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
@@ -15,9 +21,22 @@ export default function Entry() {
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
-    const event = data;
+    const regex = /["]/g;
+    const idParticipant = data.replace(regex, "");
+
     setScanned(true);
-    services.checkEntry({ data });
+
+    services.getParticipantById(idParticipant).then((result) => {
+      console.log("getParticipantId format objet", result);
+      setParticipant(result);
+    });
+
+    if (idEvent === participant.event._id) {
+      return alert("accès autorisé");
+    }
+    if (idEvent !== participant.event._id) {
+      return alert("accès refusé");
+    }
   };
 
   if (hasPermission === null) {
@@ -39,9 +58,9 @@ export default function Entry() {
         {scanned && (
           <TouchableOpacity
             onPress={() => setScanned(false)}
-            style={styles.scanAgain}
+            style={styles.button}
           >
-            <Text>Tap to scan again</Text>
+            <Text style={styles.buttonText}>Tap to scan again</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -56,12 +75,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  scanAgain: {
-    flex: 1,
-  },
-
   containerCam: {
     height: "80%",
     width: "80%",
+  },
+
+  button: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
+    borderRadius: 10,
+    backgroundColor: "black",
+    margin: 5,
+  },
+
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
   },
 });

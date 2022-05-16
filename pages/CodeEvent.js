@@ -5,8 +5,6 @@ import { useForm, Controller } from "react-hook-form";
 import { useState } from "react";
 
 export default function CodeEvent({ navigation }) {
-  const [event, setEvent] = useState({});
-
   const {
     control,
     handleSubmit,

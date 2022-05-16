@@ -5,12 +5,13 @@ const base = axios.create({ baseURL });
 
 const services = {
   getEventByCode(code) {
-    console.log("==========>", code);
-    return base.get(`/mobile/${code}`).then((res) => res.data);
+    return base.get(`/mobile/events/${code}`).then((res) => res.data);
   },
 
-  checkEntry() {
-    console.log("==========>checkentry", data);
+  getParticipantById(idParticipant) {
+    return base
+      .get(`/mobile/participants/${idParticipant}`)
+      .then((res) => res.data);
   },
 };
 

@@ -4,18 +4,12 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useState, useEffect } from "react";
 import services from "../services";
 import dayjs from "dayjs";
+import { useForm, Controller } from "react-hook-form";
 
 export default function Event({ route, navigation }) {
   const code = route.params.data.code;
 
   const [event, setEvent] = useState({});
-
-  // const fetchEventData = async () => {
-  //   console.log("fetch", code);
-  //   const result = await services.getEventByCode(code);
-  //   setEvent(result);
-  //   console.log("fetchEvent", result);
-  // };
 
   const fetchEventData = () => {
     services.getEventByCode(code).then((result) => {
@@ -23,6 +17,19 @@ export default function Event({ route, navigation }) {
       setEvent(result);
     });
   };
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValue: { value: "" },
+  });
+
+  function onSubmit(data) {
+    console.log("onSubmit", data);
+    navigation.navigate("Entry", { data: event });
+  }
 
   useEffect(() => {
     fetchEventData();
@@ -56,13 +63,11 @@ export default function Event({ route, navigation }) {
       </View>
 
       <View style={styles.containerAction}>
-        <TouchableOpacity style={styles.button}>
-          <Text
-            style={styles.buttonText}
-            onPress={() => navigation.navigate("Entry")}
-          >
-            Scanner l'entrée
-          </Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleSubmit(onSubmit)}
+        >
+          <Text style={styles.buttonText}>Scanner l'entrée</Text>
         </TouchableOpacity>
       </View>
 
