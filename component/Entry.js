@@ -5,6 +5,7 @@ import services from "../services";
 
 export default function Entry({ route, navigation }) {
   const idEvent = route.params.data._id;
+  console.log("Event ID####", idEvent);
 
   const [participant, setParticipant] = useState({
     event: {},
@@ -20,22 +21,26 @@ export default function Entry({ route, navigation }) {
     })();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = async ({ type, data }) => {
     const regex = /["]/g;
     const idParticipant = data.replace(regex, "");
 
     setScanned(true);
 
-    services.getParticipantById(idParticipant).then((result) => {
-      console.log("getParticipantId format objet", result);
-      setParticipant(result);
-    });
+    const result = await services.getParticipantById(idParticipant);
+    console.log("RESULT", result);
+    setParticipant(result);
 
-    if (idEvent === participant.event._id) {
-      return alert("accès autorisé");
-    }
-    if (idEvent !== participant.event._id) {
-      return alert("accès refusé");
+    console.log(
+      "****************participant.event._id*************",
+      result.event._id
+    );
+    if (idEvent === result.event._id) {
+      return navigation.navigate("AccessConfirm", {
+        data,
+      });
+    } else {
+      return navigation.navigate("AccessDenied");
     }
   };
 
@@ -86,8 +91,8 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
     borderRadius: 10,
-    backgroundColor: "black",
     margin: 5,
+    backgroundColor: "rgb(19, 181, 230)",
   },
 
   buttonText: {

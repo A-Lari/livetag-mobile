@@ -13,6 +13,16 @@ const services = {
       .get(`/mobile/participants/${idParticipant}`)
       .then((res) => res.data);
   },
+
+  getActivitiesById(idActivities) {
+    return base
+      .get(`/mobile/activities/${idActivities}`)
+      .then((res) => res.data);
+  },
+
+  getActivitiesByEventId(idEvent) {
+    return base.get(`/activities?idEvent=${idEvent}`).then((res) => res.data);
+  },
 };
 
 export default services;

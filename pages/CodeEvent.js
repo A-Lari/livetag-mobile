@@ -64,13 +64,13 @@ export default function CodeEvent({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
   },
 
   containerLogo: {
-    width: "70%",
+    width: "80%",
     height: "10%",
   },
 
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
     borderRadius: 10,
-    backgroundColor: "black",
+    backgroundColor: "rgb(19, 181, 230)",
     margin: 5,
   },
 

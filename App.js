@@ -5,6 +5,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import MyTabs from "./component/MyTabs";
 import Entry from "./component/Entry";
 import Activities from "./component/Activities";
+import AccessConfirm from "./component/AccessConfirm";
+import AccessDenied from "./component/AccessDenied";
 
 const Stack = createStackNavigator();
 
@@ -19,6 +21,8 @@ export default function App() {
         />
         <Stack.Screen name="Entry" component={Entry} />
         <Stack.Screen name="Activities" component={Activities} />
+        <Stack.Screen name="AccessConfirm" component={AccessConfirm} />
+        <Stack.Screen name="AccessDenied" component={AccessDenied} />
       </Stack.Navigator>
     </NavigationContainer>
   );
