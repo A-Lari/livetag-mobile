@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useState, useEffect } from "react";
 import services from "../services";
 import { Ionicons } from "@expo/vector-icons";
@@ -7,16 +7,12 @@ import { Ionicons } from "@expo/vector-icons";
 export default function ConfirmEventAccess({ route, navigation }) {
   const regex = /["]/g;
   const idParticipant = route.params.data.replace(regex, "");
-
-  console.log("confirm event access ***", idParticipant);
-
   const [participant, setParticipant] = useState({
     event: {},
   });
 
   const fetchParticipantData = () => {
     services.getParticipantById(idParticipant).then((result) => {
-      console.log("je suis fetchParticipantData", result);
       setParticipant(result);
     });
   };
@@ -43,18 +39,14 @@ export default function ConfirmEventAccess({ route, navigation }) {
         <Text style={styles.containerTitle}>Rôle du participant</Text>
         <Text style={styles.containerData}>{participant?.role?.role_name}</Text>
       </View>
-      {/* <View>
-        <TouchableOpacity style={styles.button}>
-          <Text
-            style={styles.buttonText}
-            onPress={() =>
-              navigation.navigate("Entry", { data: participant.event._id })
-            }
-          >
-            Retour
-          </Text>
+      <View>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>RETOUR</Text>
         </TouchableOpacity>
-      </View> */}
+      </View>
     </View>
   );
 }
@@ -105,18 +97,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 30,
   },
-  // button: {
-  //   paddingTop: 10,
-  //   paddingBottom: 10,
-  //   paddingLeft: 30,
-  //   paddingRight: 30,
-  //   borderRadius: 10,
-  //   margin: 5,
-  //   backgroundColor: "rgb(19, 181, 230)",
-  // },
 
-  // buttonText: {
-  //   color: "white",
-  //   fontWeight: "bold",
-  // },
+  button: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
+    borderRadius: 10,
+    margin: 5,
+    backgroundColor: " rgb(1, 80, 104)",
+  },
+
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
 });

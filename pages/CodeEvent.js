@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, Text, View, Image, TextInput } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useForm, Controller } from "react-hook-form";
-import { useState } from "react";
 
 export default function CodeEvent({ navigation }) {
   const {
@@ -102,7 +101,7 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
     borderRadius: 10,
-    backgroundColor: "rgb(19, 181, 230)",
+    backgroundColor: " rgb(1, 80, 104)",
     margin: 5,
   },
 

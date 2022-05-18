@@ -1,11 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, TextInput } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useState, useEffect } from "react";
 import services from "../services";
 import dayjs from "dayjs";
 import RNPickerSelect from "react-native-picker-select";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 export default function Event({ route, navigation }) {
   const code = route.params.data.code;
@@ -16,10 +16,7 @@ export default function Event({ route, navigation }) {
 
   const fetchEventData = () => {
     services.getEventByCode(code).then((result) => {
-      console.log("je suis fetchEventData", result);
       services.getActivitiesByEventId(result._id).then((activities) => {
-        console.log("hello activities§§§§§§", activities);
-
         const selectNewActivities = [];
 
         activities.forEach((element) => {
@@ -29,7 +26,6 @@ export default function Event({ route, navigation }) {
           };
           selectNewActivities.push(item);
         });
-        console.log("!,!,!,!,!,!,selectNewActivities", selectNewActivities);
 
         setSelectActivities(selectNewActivities);
       });
@@ -46,12 +42,10 @@ export default function Event({ route, navigation }) {
   });
 
   function onSubmit(data) {
-    console.log("onSubmit", data);
     navigation.navigate("Entry", { data: event });
   }
 
   const handleActivity = (idActivity) => {
-    console.log("IDActivity &&& handleActivity", idActivity);
     setSelectActivity(idActivity);
   };
 
@@ -173,7 +167,7 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
     borderRadius: 10,
-    backgroundColor: "rgb(19, 181, 230)",
+    backgroundColor: " rgb(1, 80, 104)",
     margin: 20,
   },
 

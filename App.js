@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -7,6 +7,7 @@ import Entry from "./component/Entry";
 import Activities from "./component/Activities";
 import AccessConfirm from "./component/AccessConfirm";
 import AccessDenied from "./component/AccessDenied";
+import Event from "./pages/Event";
 
 const Stack = createStackNavigator();
 
@@ -21,8 +22,18 @@ export default function App() {
         />
         <Stack.Screen name="Entry" component={Entry} />
         <Stack.Screen name="Activities" component={Activities} />
-        <Stack.Screen name="AccessConfirm" component={AccessConfirm} />
-        <Stack.Screen name="AccessDenied" component={AccessDenied} />
+        <Stack.Screen name="Event" component={Event} />
+
+        <Stack.Screen
+          name="AccessConfirm"
+          component={AccessConfirm}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AccessDenied"
+          component={AccessDenied}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

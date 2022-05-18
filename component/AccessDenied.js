@@ -1,8 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function ConfirmEventAccess() {
+export default function AccessDenied({ navigation }) {
   return (
     <View style={styles.container}>
       <Ionicons name="md-close-circle" size={100} color="red" />
@@ -12,6 +12,14 @@ export default function ConfirmEventAccess() {
       <View styles={styles.infos}>
         <Text style={styles.containerTitle}>Participant non inscrit</Text>
         <Text style={styles.containerTitle}>Accès non autorisé</Text>
+      </View>
+      <View>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>RETOUR</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -51,5 +59,20 @@ const styles = StyleSheet.create({
 
   infos: {
     flex: 1,
+  },
+
+  button: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 30,
+    paddingRight: 30,
+    borderRadius: 10,
+    margin: 5,
+    backgroundColor: " rgb(1, 80, 104)",
+  },
+
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
   },
 });
