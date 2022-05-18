@@ -53,8 +53,16 @@ export default function Event({ route, navigation }) {
     fetchEventData();
   }, [code]);
 
+  const handlePressActivity = () => {
+    if (selectActivity === null) {
+      return alert("La sélection d'une activité est obligatoire");
+    } else {
+      return navigation.navigate("Activities", { idActivity: selectActivity });
+    }
+  };
+
   const placeholder = {
-    label: "Selectionnez une activité...",
+    label: "Liste des activités",
     value: null,
     color: "#9EA0A4",
   };
@@ -69,22 +77,22 @@ export default function Event({ route, navigation }) {
       </View>
 
       <View style={styles.containerText}>
-        <Text style={styles.containerTitle}>
-          Bienvenue à {event.event_name}
-        </Text>
+        <Text style={styles.containerTitle}>Évènement :</Text>
+        <Text style={styles.containerTitle2}>{event.event_name}</Text>
+
         <Text style={styles.containerComment}>Code : {event.code}</Text>
         <Text style={styles.containerComment}>{event.description}</Text>
         <Text style={styles.containerComment}>
-          Début :{dayjs(event.start_date).format("DD.MM.YYYY")}
-        </Text>
-        <Text style={styles.containerComment}>
-          Fin :{dayjs(event.end_date).format("DD.MM.YYYY")}
+          Du {dayjs(event.start_date).format("DD.MM.YYYY")} au{" "}
+          {dayjs(event.end_date).format("DD.MM.YYYY")}
         </Text>
       </View>
 
       <View style={styles.containerText}>
         <Text style={styles.containerTitle}>Vous souhaitez?</Text>
-        <Text>Merci de sélectionner quel scanner vous souhaitez utiliser</Text>
+        <Text style={styles.containerActionText}>
+          Sélectionner le scanner approprié
+        </Text>
       </View>
 
       <View style={styles.containerAction}>
@@ -92,11 +100,15 @@ export default function Event({ route, navigation }) {
           style={styles.button}
           onPress={handleSubmit(onSubmit)}
         >
-          <Text style={styles.buttonText}>SCANNER ENTRÉE</Text>
+          <Text style={styles.buttonText}>ENTRÉE</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.containerAction}>
+        <Text style={styles.containerActionText}>
+          Choisir une activité dans la liste
+        </Text>
+
         <RNPickerSelect
           placeholder={placeholder}
           onValueChange={(value) => handleActivity(value)}
@@ -104,13 +116,8 @@ export default function Event({ route, navigation }) {
         />
 
         <TouchableOpacity style={styles.button}>
-          <Text
-            style={styles.buttonText}
-            onPress={() =>
-              navigation.navigate("Activities", { idActivity: selectActivity })
-            }
-          >
-            SCANNER ACTIVITÉS
+          <Text style={styles.buttonText} onPress={() => handlePressActivity()}>
+            ACTIVITÉS
           </Text>
         </TouchableOpacity>
       </View>
@@ -141,24 +148,35 @@ const styles = StyleSheet.create({
   containerText: {
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 10,
+    marginTop: 30,
     width: "70%",
   },
 
   containerTitle: {
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 15,
     marginBottom: 5,
   },
 
+  containerTitle2: {
+    fontWeight: "bold",
+    fontSize: 25,
+    marginBottom: 5,
+    color: " rgb(1, 80, 104)",
+  },
+
   containerComment: {
-    fontStyle: "italic",
     marginTop: 5,
   },
 
   containerAction: {
     alignItems: "center",
     justifyContent: "center",
+  },
+
+  containerActionText: {
+    marginBottom: 10,
+    fontStyle: "italic",
   },
 
   button: {

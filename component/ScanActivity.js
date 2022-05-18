@@ -40,7 +40,7 @@ export default function Activities({ route, navigation }) {
   };
 
   if (hasPermission === null) {
-    return <Text>Requestion for camera persommission</Text>;
+    return <Text>Request for camera permission</Text>;
   }
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;

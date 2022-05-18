@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import services from "../services";
 import { useIsFocused } from "@react-navigation/native";
+import MyTabs from "./MyTabs";
 
 export default function Entry({ route, navigation }) {
   const idEvent = route.params.data._id;
@@ -37,7 +38,7 @@ export default function Entry({ route, navigation }) {
   };
 
   if (hasPermission === null) {
-    return <Text>Requestion for camera persommission</Text>;
+    return <Text>Request for camera permission</Text>;
   }
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
