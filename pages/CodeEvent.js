@@ -2,6 +2,10 @@ import React from "react";
 import { StyleSheet, Text, View, Image, TextInput } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useForm, Controller } from "react-hook-form";
+import services from "../services";
+const dayjs = require("dayjs");
+const isBetween = require("dayjs/plugin/isBetween");
+dayjs.extend(isBetween);
 
 export default function CodeEvent({ navigation }) {
   const {
@@ -13,7 +17,38 @@ export default function CodeEvent({ navigation }) {
   });
 
   function onSubmit(data) {
-    navigation.navigate("Evènement", { data });
+    if (data.code !== undefined) {
+      const checkEventByHandledCode = () => {
+        services
+          .getEventByCode(data.code)
+          .then((event) => {
+            if (event.code !== undefined) {
+              const start = Date.now();
+              console.log("START", event.start_date);
+              if (
+                dayjs(start).isBetween(
+                  event.start_date,
+                  event.end_date,
+                  "day",
+                  "[]"
+                )
+              ) {
+                return navigation.navigate("Evènement", { data });
+              } else {
+                return alert("Évènement hors date courrante");
+              }
+            } else {
+              return alert("Code évènement erroné");
+            }
+          })
+          .catch((error) => {
+            alert("Veuillez saisir un code évènement");
+          });
+      };
+      checkEventByHandledCode();
+    } else {
+      alert("Veuillez saisir un code évènement");
+    }
   }
 
   return (
