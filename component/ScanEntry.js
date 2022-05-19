@@ -3,16 +3,12 @@ import React, { useState, useEffect } from "react";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import services from "../services";
 import { useIsFocused } from "@react-navigation/native";
-import MyTabs from "./MyTabs";
 
 export default function Entry({ route, navigation }) {
   const idEvent = route.params.data._id;
-  const event = route.params.data;
-  const [participant, setParticipant] = useState({
-    event: {},
-  });
-  const isFocused = useIsFocused();
+
   const [hasPermission, setHasPermission] = useState(null);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     (async () => {
@@ -25,10 +21,10 @@ export default function Entry({ route, navigation }) {
     const regex = /["]/g;
     const idParticipant = data.replace(regex, "");
 
-    const result = await services.getParticipantById(idParticipant);
-    setParticipant(result);
+    /* On recherche le participant et on vérifie si l'event choisie est bien l'event inscript pour le participant */
+    const participant = await services.getParticipantById(idParticipant);
 
-    if (idEvent === result.event._id) {
+    if (idEvent === participant.event._id) {
       return navigation.navigate("AccessConfirm", {
         data,
       });

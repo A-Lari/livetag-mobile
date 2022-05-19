@@ -8,7 +8,9 @@ export default function ConfirmEventAccess({ route, navigation }) {
   const regex = /["]/g;
   const idParticipant = route.params.data.replace(regex, "");
   const [participant, setParticipant] = useState({
+    role: {},
     event: {},
+    optional_activities: [{}]
   });
 
   const fetchParticipantData = () => {
@@ -37,7 +39,7 @@ export default function ConfirmEventAccess({ route, navigation }) {
       </View>
       <View>
         <Text style={styles.containerTitle}>Rôle du participant</Text>
-        <Text style={styles.containerData}>{participant?.role?.role_name}</Text>
+        <Text style={styles.containerData}>{participant.role.role_name}</Text>
       </View>
       <View>
         <TouchableOpacity

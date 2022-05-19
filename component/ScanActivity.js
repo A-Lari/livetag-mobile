@@ -10,10 +10,6 @@ export default function Activities({ route, navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const isFocused = useIsFocused();
 
-  const [participant, setParticipant] = useState({
-    event: {},
-  });
-
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -25,12 +21,12 @@ export default function Activities({ route, navigation }) {
     const regex = /["]/g;
     const idParticipant = data.replace(regex, "");
 
-    const result = await services.getParticipantById(idParticipant);
-    setParticipant(result);
+    /* On recherche le participant et on vérifie si l'activité choisie fait parti des activités du role ou des activités en option */
+    const participant = await services.getParticipantById(idParticipant);
+    const refActivities = participant.role.activities;
+    const refOptionalActivities = participant.optional_activities.map((activity) => activity._id); //On fait cela car on a le populate dans la requete backend
 
-    const refActivities = result.role.activities;
-
-    if (refActivities.includes(idActivity)) {
+    if (refActivities.includes(idActivity) || refOptionalActivities.includes(idActivity)) {
       return navigation.navigate("AccessConfirm", {
         data,
       });
