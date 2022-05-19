@@ -17,14 +17,12 @@ export default function Event({ route, navigation }) {
   const fetchEventData = () => {
     services.getEventByCode(code).then((result) => {
       services.getActivitiesByEventId(result._id).then((activities) => {
-        const selectNewActivities = [];
 
-        activities.forEach((element) => {
-          const item = {
-            label: element.activity_name,
-            value: element._id,
+        const selectNewActivities = activities.map((activity) => {
+          return {
+              label: activity.activity_name,
+              value: activity._id
           };
-          selectNewActivities.push(item);
         });
 
         setSelectActivities(selectNewActivities);
