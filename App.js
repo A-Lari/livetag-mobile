@@ -8,6 +8,7 @@ import Activities from "./component/ScanActivity";
 import AccessConfirm from "./component/AccessConfirm";
 import AccessDenied from "./component/AccessDenied";
 import Event from "./pages/Event";
+import CodeEvent from "./pages/CodeEvent";
 
 const Stack = createStackNavigator();
 
@@ -16,13 +17,13 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator style={styles.container}>
         <Stack.Screen
+          name="Saisie"
+          component={CodeEvent}
           options={{ headerShown: false }}
-          name="MyTabs"
-          component={MyTabs}
         />
         <Stack.Screen name="Entry" component={Entry} />
         <Stack.Screen name="Activities" component={Activities} />
-        <Stack.Screen name="Event" component={Event} />
+        <Stack.Screen name="Évènement" component={Event} />
 
         <Stack.Screen
           name="AccessConfirm"

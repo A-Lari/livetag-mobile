@@ -24,7 +24,6 @@ export default function CodeEvent({ navigation }) {
           .then((event) => {
             if (event.code !== undefined) {
               const start = Date.now();
-              console.log("START", event.start_date);
               if (
                 dayjs(start).isBetween(
                   event.start_date,
@@ -33,7 +32,7 @@ export default function CodeEvent({ navigation }) {
                   "[]"
                 )
               ) {
-                return navigation.navigate("Evènement", { data });
+                return navigation.navigate("Évènement", { data });
               } else {
                 return alert("Évènement hors date courrante");
               }

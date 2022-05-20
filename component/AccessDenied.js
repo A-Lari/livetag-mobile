@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   AccessDenied: {
     textAlign: "center",
     justifyContent: "center",
-    height: 150,
+    height: 120,
     width: 300,
     borderRadius: 10,
     backgroundColor: "red",

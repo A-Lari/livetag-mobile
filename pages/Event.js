@@ -17,11 +17,10 @@ export default function Event({ route, navigation }) {
   const fetchEventData = () => {
     services.getEventByCode(code).then((result) => {
       services.getActivitiesByEventId(result._id).then((activities) => {
-
         const selectNewActivities = activities.map((activity) => {
           return {
-              label: activity.activity_name,
-              value: activity._id
+            label: activity.activity_name,
+            value: activity._id,
           };
         });
 
@@ -55,7 +54,9 @@ export default function Event({ route, navigation }) {
     if (selectActivity === null) {
       return alert("La sélection d'une activité est obligatoire");
     } else {
-      return navigation.navigate("Activities", { idActivity: selectActivity });
+      return navigation.navigate("Activities", {
+        data: { idActivity: selectActivity, idEvent: event._id },
+      });
     }
   };
 
