@@ -15,7 +15,7 @@ export default function MyTabs({ route }) {
 
           if (route.name === "Saisie") {
             iconName = focused ? "home" : "home-outline";
-          } else if (route.name === "Evènement") {
+          } else if (route.name === "Évènement") {
             iconName = focused ? "barcode" : "barcode-outline";
           }
 
@@ -35,9 +35,11 @@ export default function MyTabs({ route }) {
       />
 
       <Tab.Screen
-        name="Evènement"
+        name="Évènement"
         component={Event}
         options={{
+          tabBarButton: () => null,
+          tabBarVisible: false,
           headerShown: false,
         }}
       />

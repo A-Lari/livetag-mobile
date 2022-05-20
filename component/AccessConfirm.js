@@ -1,27 +1,71 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { useState, useEffect } from "react";
 import services from "../services";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function ConfirmEventAccess({ route, navigation }) {
+export default function AccessConfirm({ route, navigation }) {
   const regex = /["]/g;
-  const idParticipant = route.params.data.replace(regex, "");
+  const idParticipant = route.params.data.idParticipant.replace(regex, "");
+  const idEvent = route.params.data.idEvent.replace(regex, "");
+
   const [participant, setParticipant] = useState({
-    role: {},
+    role: {
+      activities: [],
+    },
     event: {},
-    optional_activities: [{}]
+    optional_activities: [{}],
   });
 
+  const [activities, setActivities] = useState({});
+
+  const [display, setDisplay] = useState([{}]);
+
   const fetchParticipantData = () => {
-    services.getParticipantById(idParticipant).then((result) => {
-      setParticipant(result);
+    Promise.all([
+      services.getParticipantById(idParticipant),
+      services.getActivitiesByEventId(idEvent),
+    ]).then((values) => {
+      const [searchParticipant, searchActivities] = values;
+
+      const refActivities = searchParticipant.role.activities;
+      const refOptionalActivities = searchParticipant.optional_activities.map(
+        (activity) => activity._id
+      );
+
+      const allRefActivities = refActivities.concat(refOptionalActivities);
+      console.log("allrefActivities", allRefActivities);
+
+      const displayActivities = [];
+
+      searchActivities.map((activity) => {
+        if (allRefActivities.includes(activity._id)) {
+          displayActivities.push(activity);
+        }
+      });
+
+      setDisplay(displayActivities);
+      console.log("******************");
+
+      console.log("................", display);
+
+      console.log("values", values);
+      setParticipant(searchParticipant);
+      setActivities(searchActivities);
     });
   };
 
   useEffect(() => {
     fetchParticipantData();
   }, []);
+
+  console.log("activities", activities);
 
   return (
     <View style={styles.container}>
@@ -31,16 +75,35 @@ export default function ConfirmEventAccess({ route, navigation }) {
         <Text style={styles.confirmAccessText}>Confirmé</Text>
       </View>
       <View styles={styles.infos}>
-        <Text style={styles.containerTitle}>Id du participant</Text>
+        <Text style={styles.containerTitle}>Id du participant :</Text>
         <Text style={styles.containerText}>Nom :</Text>
         <Text style={styles.containerData}> {participant.lastname}</Text>
         <Text style={styles.containerText}>Prénom :</Text>
         <Text style={styles.containerData}> {participant.firstname}</Text>
       </View>
       <View>
-        <Text style={styles.containerTitle}>Rôle du participant</Text>
+        <Text style={styles.containerTitle}>Rôle du participant :</Text>
         <Text style={styles.containerData}>{participant.role.role_name}</Text>
       </View>
+
+      <View>
+        <Text style={styles.containerTitle}>Activités :</Text>
+      </View>
+
+      <View style={styles.containerScroll}>
+        <ScrollView>
+          {display.map((element, key) => {
+            return (
+              <View key={key}>
+                <Text style={styles.containerDataActivities}>
+                  {element.activity_name}
+                </Text>
+              </View>
+            );
+          })}
+        </ScrollView>
+      </View>
+
       <View>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
@@ -64,11 +127,11 @@ const styles = StyleSheet.create({
   confirmAccess: {
     textAlign: "center",
     justifyContent: "center",
-    height: 150,
+    height: 120,
     width: 300,
     borderRadius: 10,
     backgroundColor: "green",
-    marginBottom: 60,
+    marginBottom: 15,
   },
   confirmAccessText: {
     textAlign: "center",
@@ -78,9 +141,11 @@ const styles = StyleSheet.create({
   },
 
   containerTitle: {
+    textAlign: "center",
     fontWeight: "bold",
     fontSize: 20,
     marginBottom: 5,
+    marginTop: 5,
   },
 
   infos: {
@@ -94,10 +159,18 @@ const styles = StyleSheet.create({
   },
 
   containerData: {
+    textTransform: "capitalize",
     color: "green",
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 30,
+  },
+
+  containerDataActivities: {
+    color: "green",
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 15,
   },
 
   button: {
@@ -107,11 +180,14 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     borderRadius: 10,
     backgroundColor: " rgb(1, 80, 104)",
-    marginTop: 30,
   },
 
   buttonText: {
     color: "white",
     fontWeight: "bold",
+  },
+
+  containerScroll: {
+    flex: 1,
   },
 });

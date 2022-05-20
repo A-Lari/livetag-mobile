@@ -26,7 +26,7 @@ export default function Entry({ route, navigation }) {
 
     if (idEvent === participant.event._id) {
       return navigation.navigate("AccessConfirm", {
-        data,
+        data: { idEvent: idEvent, idParticipant: participant._id },
       });
     } else {
       return navigation.navigate("AccessDenied");
